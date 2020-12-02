@@ -37,15 +37,15 @@ class Block:
 
 
         start = time.perf_counter()
-        print (start)
         while not hash.startswith('0' * difficulty):
             self.nonce += 1
             hash = self.calc_hash()
             #print("Hash Inside : ",  hash)
-            if ((time.perf_counter() - start) >= 10):
+            if ((time.perf_counter() - start) >= 30):
                 hash = 404
                 return hash
 
+        print("Completed In: " + str((time.perf_counter() - start)) + " seconds")
         return hash
 
 
@@ -132,7 +132,7 @@ class Blockchain:
 
         if (porti == lastport):
             print("Warning Too Many Mining Requests - Difficulty Will Be Increased")
-            diff = self.difficulty + 2
+            diff = self.difficulty + 1
             proof = block.calc_proof(diff)
         else:
             proof = block.calc_proof(self.difficulty)

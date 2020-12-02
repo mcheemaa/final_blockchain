@@ -35,6 +35,7 @@ def echo_nodes():
 @manager.command
 def runserver(port):
     portNum = port
+
     session['node_id'] = port
     echo_nodes()
     app.run(port=int(port))
@@ -95,12 +96,11 @@ def hack_chain():
     return f'Block {block_index} changed'
 
 
-@app.route('/mine/port', methods=['POST'])
+@app.route('/mine/port', methods=['GET'])
 def mine():
-    data = request.get_json()
-    portNumber = data['port']
-    print(portNumber)
-    block = my_blockchain.mine(data['port'])
+
+    server_id = str(request.host)
+    block = my_blockchain.mine(server_id[-4:])
 
 
     if not block:
